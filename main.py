@@ -2275,12 +2275,18 @@ def render_home_html(
 
 
 @app.get("/", response_class=HTMLResponse)
+@app.get("/api", response_class=HTMLResponse)
+@app.get("/api/", response_class=HTMLResponse)
+@app.get("/api/index", response_class=HTMLResponse)
+@app.get("/api/index.py", response_class=HTMLResponse)
 def home(request: Request) -> HTMLResponse:
     """Serve the VyaparAI home page with editable inventory, CSV tools, and order planner."""
     return HTMLResponse(content=render_home_html(request.query_params))
 
 
 @app.get("/sample-inventory.csv")
+@app.get("/api/sample-inventory.csv")
+@app.get("/api/index.py/sample-inventory.csv")
 def download_sample_csv() -> Response:
     """Download the built-in sample inventory as a 5-column CSV file."""
     return Response(
@@ -2291,6 +2297,8 @@ def download_sample_csv() -> Response:
 
 
 @app.post("/upload-csv", response_class=HTMLResponse)
+@app.post("/api/upload-csv", response_class=HTMLResponse)
+@app.post("/api/index.py/upload-csv", response_class=HTMLResponse)
 async def upload_inventory_csv(request: Request) -> HTMLResponse:
     """Validate an uploaded inventory CSV and populate the table, or preserve current rows on error."""
     content_type = request.headers.get("content-type", "")
